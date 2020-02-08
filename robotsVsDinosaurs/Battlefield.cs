@@ -9,22 +9,79 @@ namespace robotsVsDinosaurs
     class Battlefield
     {
         //Member Variables (Has a)
-        Herd myHerd = new Herd();
-        Fleet fleet = new Fleet();
-        Random random = new Random();
-        
-        Robot[] robotArray;
+        Herd herd;
+        Fleet fleet;
+        Random random;
+        List<Dinosaur> dinosaurs;      
+        public List<Robot> robots;
+        Dinosaur currentDinosaur;
+        Robot currentRobot;
         int diceRollMaxValue = 13;
-        public List<Dinosaur> dinosaurList = new List<Dinosaur>();
-        
-        ///FIX THIS
+        //public List<Dinosaur> dinosaurList = new List<Dinosaur>();
+
         //Constructor (Spawner)
+        public Battlefield()
+        {
+            herd = new Herd();
+            fleet = new Fleet();
+            random = new Random();
+            dinosaurs = herd.GenerateDinosaurList();
+            robots = fleet.GenerateRobotList();
+        }
+
         //Member Methods (Can do)
         public void PlayGame ()
         {
-            Console.WriteLine("Pick your starting dinosaur: Fred(f), George(g), or Ron(r)");
+            bool attackerPicked = true;
+            do
+            {
+                //Console.WriteLine("Who wants to attack? Dinosaur(d) or Robot(r)");
+                //ConsoleKeyInfo attacker = Console.ReadKey();
+                //switch (attacker.Key)
+                //{
+                //    case ConsoleKey.D:
+                PickDinosaur();
+                PickRobot();
+                //}
+
+
+            } while (!attackerPicked);
+        }
+        public void PickDinosaur ()
+        {
+            Console.WriteLine("Pick your dinosaur: ");
+            for (int i = 0; i < dinosaurs.Count; i++)
+            {
+                Console.WriteLine(i + " " + dinosaurs[i].dinosaurName);
+            }
             ConsoleKeyInfo dinosaurChoice = Console.ReadKey();
-            //switch ()
+            Console.WriteLine();
+            for (int i = 0; i < dinosaurs.Count; i++)
+            {
+                if (i == int.Parse(dinosaurChoice.KeyChar.ToString()))
+                {
+                    currentDinosaur = dinosaurs[i];
+                    Console.WriteLine(dinosaurs[i].dinosaurName);
+                }
+            }
+        }
+        public void PickRobot()
+        {
+            Console.WriteLine("Pick your robot: ");
+            for (int i = 0; i < robots.Count; i++)
+            {
+                Console.WriteLine(i + " " + robots[i].robotName);
+            }
+            ConsoleKeyInfo robotChoice = Console.ReadKey();
+            Console.WriteLine();
+            for (int i = 0; i < robots.Count; i++)
+            {
+                if (i == int.Parse(robotChoice.KeyChar.ToString()))
+                {
+                    currentRobot = robots[i];
+                    Console.WriteLine(robots[i].robotName);
+                }
+            }
         }
         public void DinosaurAttacksRobot(Dinosaur dinosaur, Robot robot)
         {
@@ -32,8 +89,8 @@ namespace robotsVsDinosaurs
             do
             {
                 //Roll two dice for attacker and two for defender
-                int attackerDiceRoll = random.Next(1, diceRollMaxValue);
-                int defenderDiceRoll = random.Next(1, diceRollMaxValue);
+                int attackerDiceRoll = random.Next(2, diceRollMaxValue);
+                int defenderDiceRoll = random.Next(2, diceRollMaxValue);
                 //Create attack and defense values (weighted by attack power and current energy/power level and multiplied by dice roll)
                 int attackValue = attackerDiceRoll * dinosaur.dinosaurAttackPower * dinosaur.dinosaurEnergy;
                 int defenseValue = defenderDiceRoll * robot.weapon.weaponAttackPower * robot.robotPowerLevel;
@@ -70,9 +127,9 @@ namespace robotsVsDinosaurs
                 }
             } while (attackAgain);
         }
-        public void BuildDinosaurList()
-        {
-            dinosaurList = myHerd.GenerateDinosaurList();
-        }
+        //public void BuildDinosaurList()
+        //{
+        //    dinosaurList = myHerd.GenerateDinosaurList();
+        //}
     }
 }

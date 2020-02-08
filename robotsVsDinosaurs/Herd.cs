@@ -11,13 +11,14 @@ namespace robotsVsDinosaurs
         public Dinosaur fred;
         public Dinosaur george;
         public Dinosaur ron;
-        List<Dinosaur> dinosaurList = new List<Dinosaur>();
+        List<Dinosaur> dinosaurList;
 
         public Herd()
         {
             fred = new Dinosaur("Fred", 100, 25, 5);
             george = new Dinosaur("George", 100, 25, 5);
             ron = new Dinosaur("Ron", 100, 20, 25);
+            dinosaurList = new List<Dinosaur>();
         }
 
         public List<Dinosaur> GenerateDinosaurList()

@@ -8,6 +8,26 @@ namespace robotsVsDinosaurs
 {
     class Fleet
     {
-        public Robot[] robotArray = {new Robot("Brutus", 100, 25), new Robot("Cassius", 100, 25), new Robot("Julius Caesar", 90, 20)};
+        //Member Variables (Has a)
+        Robot brutus;
+        Robot cassius;
+        Robot caesar;
+        List<Robot> robotList;
+        //Constructor (Spawner)
+        public Fleet()
+        {
+            brutus = new Robot("Brutus", 100, 25);
+            cassius = new Robot("Cassius", 100, 25);
+            caesar = new Robot("Julius Caesar", 90, 20);
+            robotList = new List<Robot>();
+        }
+        //Member Methods (Can Do)
+        public List<Robot> GenerateRobotList()
+        {
+            robotList.Add(brutus);
+            robotList.Add(cassius);
+            robotList.Add(caesar);
+            return robotList;
+        }
     }
 }
