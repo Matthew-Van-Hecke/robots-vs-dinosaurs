@@ -11,11 +11,17 @@ namespace robotsVsDinosaurs
         static void Main(string[] args)
         {
             Herd herd = new Herd();
-            Dinosaur fred = herd.dinosaurArray[0];
+            Battlefield battlefield = new Battlefield();
+            battlefield.BuildDinosaurList();
+            Dinosaur fred = battlefield.dinosaurList[0];
             Fleet fleet = new Fleet();
             Robot brutus = fleet.robotArray[0];
-            Battlefield battlefield = new Battlefield();
-            battlefield.DinosaurAttacksRobot(fred, brutus);
+            foreach (Dinosaur dino in battlefield.dinosaurList)
+            {
+                Console.WriteLine(dino.dinosaurName);
+            }
+
+            //battlefield.DinosaurAttacksRobot(fred, brutus);
             Console.ReadLine();
         }
     }

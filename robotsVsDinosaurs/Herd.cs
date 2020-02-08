@@ -8,10 +8,17 @@ namespace robotsVsDinosaurs
 {
     class Herd
     {
-        public Dinosaur fred = new Dinosaur("Fred", 100, 25, 5);
-        public Dinosaur george = new Dinosaur("George", 100, 25, 5);
-        public Dinosaur ron =  new Dinosaur("Ron", 100, 20, 25);
+        public Dinosaur fred;
+        public Dinosaur george;
+        public Dinosaur ron;
         List<Dinosaur> dinosaurList = new List<Dinosaur>();
+
+        public Herd()
+        {
+            fred = new Dinosaur("Fred", 100, 25, 5);
+            george = new Dinosaur("George", 100, 25, 5);
+            ron = new Dinosaur("Ron", 100, 20, 25);
+        }
 
         public List<Dinosaur> GenerateDinosaurList()
         {

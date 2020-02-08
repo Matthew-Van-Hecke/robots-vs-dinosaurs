@@ -15,7 +15,9 @@ namespace robotsVsDinosaurs
         
         Robot[] robotArray;
         int diceRollMaxValue = 13;
-        List<Dinosaur> dinosaurList = myHerd ///FIX THIS
+        public List<Dinosaur> dinosaurList = new List<Dinosaur>();
+        
+        ///FIX THIS
         //Constructor (Spawner)
         //Member Methods (Can do)
         public void PlayGame ()
@@ -68,6 +70,9 @@ namespace robotsVsDinosaurs
                 }
             } while (attackAgain);
         }
-        
+        public void BuildDinosaurList()
+        {
+            dinosaurList = myHerd.GenerateDinosaurList();
+        }
     }
 }
