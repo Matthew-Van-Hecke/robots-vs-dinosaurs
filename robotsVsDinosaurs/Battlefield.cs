@@ -16,6 +16,7 @@ namespace robotsVsDinosaurs
         public List<Robot> robots;
         Dinosaur currentDinosaur;
         Robot currentRobot;
+        string currentAttacker;
         int diceRollMaxValue = 13;
         //public List<Dinosaur> dinosaurList = new List<Dinosaur>();
 
@@ -27,6 +28,7 @@ namespace robotsVsDinosaurs
             random = new Random();
             dinosaurs = herd.GenerateDinosaurList();
             robots = fleet.GenerateRobotList();
+            currentAttacker = "";
         }
 
         //Member Methods (Can do)
@@ -39,13 +41,44 @@ namespace robotsVsDinosaurs
                 //ConsoleKeyInfo attacker = Console.ReadKey();
                 //switch (attacker.Key)
                 //{
+
                 //    case ConsoleKey.D:
+                PickAttacker();
                 PickDinosaur();
                 PickRobot();
+                if (currentAttacker == "dinosaur")
+                {
+                    DinosaurAttacksRobot(currentDinosaur, currentRobot);
+                }
+                else if (currentAttacker == "robot")
+                {
+                    RobotAttacksDinosaur(currentRobot, currentDinosaur);
+                }
                 //}
 
 
             } while (!attackerPicked);
+        }
+        public void PickAttacker()
+        {
+            bool repeatLoop = false;
+            do
+            {
+                Console.WriteLine("Who will attack first? Robot(r) or Dinosaur(d)?");
+                ConsoleKeyInfo userChoice = Console.ReadKey();
+                switch (userChoice.Key)
+                {
+                    case (ConsoleKey.R):
+                        currentAttacker = "robot";
+                        break;
+                    case (ConsoleKey.D):
+                        currentAttacker = "dinosaur";
+                        break;
+                    default:
+                        break;
+                }
+            } while (repeatLoop);
+            Console.WriteLine(currentAttacker);
         }
         public void PickDinosaur ()
         {
