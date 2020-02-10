@@ -21,6 +21,7 @@ namespace robotsVsDinosaurs
         bool robotDead;
         int energyIncrement = 1;
         int healthIncrement = 5;
+        int energyCapacity = 30;
         int diceRollMaxValue = 13;
 
         //Constructor (Spawner)
@@ -50,16 +51,32 @@ namespace robotsVsDinosaurs
                 if (currentAttacker == "dinosaur")
                 {
                     PickDinosaur();
-                    PickRobot();
-                    DinosaurAttacksRobot(currentDinosaur, currentRobot);
-                    PrintDivider();
+                    if (currentDinosaur.dinosaurEnergy < energyCapacity)
+                    {
+                        DinosaurNap(currentDinosaur);
+                        PrintDivider();
+                    }
+                    else
+                    {
+                        PickRobot();
+                        DinosaurAttacksRobot(currentDinosaur, currentRobot);
+                        PrintDivider();
+                    }
                 }
                 else if (currentAttacker == "robot")
                 {
                     PickRobot();
-                    PickDinosaur();
-                    RobotAttacksDinosaur(currentRobot, currentDinosaur);
-                    PrintDivider();
+                    if (currentRobot.robotPowerLevel < 30)
+                    {
+                        RobotRecharge(currentRobot);
+                        PrintDivider();
+                    }
+                    else
+                    {
+                        PickDinosaur();
+                        RobotAttacksDinosaur(currentRobot, currentDinosaur);
+                        PrintDivider();
+                    }
                 }
             }
             //When one of the lists becomes empty, other team wins.
@@ -231,6 +248,7 @@ namespace robotsVsDinosaurs
                 //Ask user if dinosaur wants to attack again.
                 Console.WriteLine($"To have {dinosaur.dinosaurName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain 2 energy.");
                 ConsoleKeyInfo keyInput = Console.ReadKey();
+                Console.WriteLine();
                 switch (keyInput.Key)
                 {
                     case ConsoleKey.Enter:
@@ -352,6 +370,44 @@ namespace robotsVsDinosaurs
             else
             {
                 return false;
+            }
+        }
+        public void DinosaurNap(Dinosaur dinosaur)
+        {
+            Console.WriteLine("If you would like to allow " + dinosaur.dinosaurName + " to recharge through napping, press N or ENTER. To instead continue into an attack, press any other key.");
+            Console.WriteLine("A nap will increase " + dinosaur.dinosaurName + "'s energy by 10 with a total energy cap of 30");
+            ConsoleKeyInfo decision = Console.ReadKey();
+            if (decision.Key == ConsoleKey.N || decision.Key == ConsoleKey.Enter)
+            {
+                if (dinosaur.dinosaurEnergy < 20)
+                {
+                    dinosaur.dinosaurEnergy += 10;
+                }
+                else
+                {
+                    dinosaur.dinosaurEnergy = energyCapacity;
+                }
+                Console.WriteLine(dinosaur.dinosaurName + " has taken a nap. New stats:");
+                PrintDinosaurStats(0, dinosaur);
+            }
+        }
+        public void RobotRecharge(Robot robot)
+        {
+            Console.WriteLine("If you would like to allow " + robot.robotName + " to recharge through plugging in, press P or ENTER. To instead continue into an attack, press any other key.");
+            Console.WriteLine("A nap will increase " + robot.robotName + "'s energy by 10 with a full battery capacity being 30");
+            ConsoleKeyInfo decision = Console.ReadKey();
+            if (decision.Key == ConsoleKey.P || decision.Key == ConsoleKey.Enter)
+            {
+                if (robot.robotPowerLevel < 20)
+                {
+                    robot.robotPowerLevel += 10;
+                }
+                else
+                {
+                    robot.robotPowerLevel = energyCapacity;
+                }
+                Console.WriteLine(robot.robotName + " recharged. New stats:");
+                PrintRobotStats(0, robot);
             }
         }
     }

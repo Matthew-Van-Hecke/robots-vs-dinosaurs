@@ -16,9 +16,9 @@ namespace robotsVsDinosaurs
         //Constructor (Spawner)
         public Fleet()
         {
-            brutus = new Robot("Brutus", 100, 25);
-            cassius = new Robot("Cassius", 100, 25);
-            caesar = new Robot("Julius Caesar", 90, 20);
+            brutus = new Robot("Brutus", 100, 30);
+            cassius = new Robot("Cassius", 100, 30);
+            caesar = new Robot("Julius Caesar", 90, 30);
             robotList = new List<Robot>();
         }
         //Member Methods (Can Do)
