@@ -59,13 +59,11 @@ namespace robotsVsDinosaurs
                     if (currentDinosaur.dinosaurEnergy < energyCapacity)
                     {
                         dinosaurNapped = DinosaurNap(currentDinosaur);
-                        PrintDivider();
                     }
                     if (!dinosaurNapped)
                     {
                         PickRobot();
                         DinosaurAttacksRobot(currentDinosaur, currentRobot);
-                        PrintDivider();
                     }
                 }
                 else if (!dinosaursTurn)
@@ -76,13 +74,11 @@ namespace robotsVsDinosaurs
                     if (currentRobot.robotPowerLevel < 30)
                     {
                         robotRecharged = RobotRecharge(currentRobot);
-                        PrintDivider();
                     }
                     if (!robotRecharged)
                     {
                         PickDinosaur();
                         RobotAttacksDinosaur(currentRobot, currentDinosaur);
-                        PrintDivider();
                     }
                 }
                 dinosaursTurn = !dinosaursTurn;
@@ -138,6 +134,8 @@ namespace robotsVsDinosaurs
             
             PrintDivider();
             Console.WriteLine("Hit any key to continue.");
+            Console.ReadKey();
+            Console.WriteLine();
             PrintDivider();
         }
         public void PickRobot()
@@ -176,15 +174,21 @@ namespace robotsVsDinosaurs
                     PrintRobotStats(i, robots[i]);
                 }
             }
-            currentRobot.GetNewWeapon(currentRobot.robotName);
-            PrintRobotStats(robots.IndexOf(currentRobot), currentRobot);
+            
             PrintDivider();
             Console.WriteLine("Hit any key to continue.");
-            Console.ReadLine();
+            Console.ReadKey();
+            Console.WriteLine();
             PrintDivider();
         }
         public void DinosaurAttacksRobot(Dinosaur dinosaur, Robot robot)
         {
+            //Prompt user to pick an attack type.
+            currentDinosaur.SelectAttackType(currentDinosaur.dinosaurName);
+            PrintDinosaurStats(dinosaurs.IndexOf(currentDinosaur), currentDinosaur);
+            Console.WriteLine("Hit any key to continue.");
+            Console.ReadKey();
+            Console.WriteLine();
             bool attackAgain = false;
             do
             {
@@ -192,7 +196,7 @@ namespace robotsVsDinosaurs
                 int attackerDiceRoll = random.Next(2, diceRollMaxValue);
                 int defenderDiceRoll = random.Next(2, diceRollMaxValue);
                 //Create attack and defense values (weighted by attack power and current energy/power level and multiplied by dice roll)
-                int attackValue = attackerDiceRoll * dinosaur.dinosaurAttackPower * dinosaur.dinosaurEnergy;
+                int attackValue = attackerDiceRoll * (dinosaur.dinosaurAttackPower + dinosaur.attackType.attackTypeAttackPower) * dinosaur.dinosaurEnergy;
                 int defenseValue = defenderDiceRoll * robot.weapon.weaponAttackPower * robot.robotPowerLevel;
                 Console.WriteLine($"Dinosaur scores {attackValue}!");
                 Console.WriteLine($"Robot scores {defenseValue}!");
@@ -223,6 +227,11 @@ namespace robotsVsDinosaurs
                     robotDead = false;
                     break;
                 }
+                if (currentDinosaur.dinosaurEnergy <= 0 || currentRobot.robotPowerLevel <= 0)
+                {
+                    Console.WriteLine("One of the contestants has become completely exhausted, and a break has been called for.");
+                    break;
+                }
                 //Ask user if dinosaur wants to attack again.
                 Console.WriteLine($"To have {dinosaur.dinosaurName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain 2 energy.");
                 ConsoleKeyInfo keyInput = Console.ReadKey();
@@ -245,6 +254,12 @@ namespace robotsVsDinosaurs
 
         public void RobotAttacksDinosaur(Robot robot, Dinosaur dinosaur)
         {
+            //Prompt user to pick up a weapon to upgrade their attack power since they aren't being caught by surprise
+            currentRobot.GetNewWeapon(currentRobot.robotName);
+            PrintRobotStats(robots.IndexOf(currentRobot), currentRobot);
+            Console.WriteLine("Hit any key to continue.");
+            Console.ReadKey();
+            Console.WriteLine();
             bool attackAgain = false;
             do
             {
@@ -322,6 +337,7 @@ namespace robotsVsDinosaurs
             Console.WriteLine("    Health: " + dinosaur.dinosaurHealth);
             Console.WriteLine("    Energy: " + dinosaur.dinosaurEnergy);
             Console.WriteLine("    Attack Power: " + dinosaur.dinosaurAttackPower);
+            Console.WriteLine("    Attack Type (added to attack power): " + dinosaur.attackType.attackTypeAttackPower);
             Console.WriteLine();
         }
         public void PrintDivider()
