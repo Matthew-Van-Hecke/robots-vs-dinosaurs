@@ -40,11 +40,14 @@ namespace robotsVsDinosaurs
         //Member Methods (Can do)
         public void PlayGame()
         {
-
+            bool robotRecharged = false;
+            bool dinosaurNapped = false;
             
 
             while (dinosaurs.Count > 0 && robots.Count > 0)
             {
+                dinosaurNapped = false;
+                robotRecharged = false;
                 PickAttacker();
                 PrintDivider();
 
@@ -53,10 +56,10 @@ namespace robotsVsDinosaurs
                     PickDinosaur();
                     if (currentDinosaur.dinosaurEnergy < energyCapacity)
                     {
-                        DinosaurNap(currentDinosaur);
+                        dinosaurNapped = DinosaurNap(currentDinosaur);
                         PrintDivider();
                     }
-                    else
+                    if (!dinosaurNapped)
                     {
                         PickRobot();
                         DinosaurAttacksRobot(currentDinosaur, currentRobot);
@@ -68,10 +71,10 @@ namespace robotsVsDinosaurs
                     PickRobot();
                     if (currentRobot.robotPowerLevel < 30)
                     {
-                        RobotRecharge(currentRobot);
+                        robotRecharged = RobotRecharge(currentRobot);
                         PrintDivider();
                     }
-                    else
+                    if (!robotRecharged)
                     {
                         PickDinosaur();
                         RobotAttacksDinosaur(currentRobot, currentDinosaur);
@@ -255,12 +258,13 @@ namespace robotsVsDinosaurs
                         attackAgain = true;
                         break;
                     default:
-                        dinosaur.dinosaurEnergy += energyIncrement;
-                        robot.robotPowerLevel += energyIncrement;
                         attackAgain = false;
                         break;
                 }
             } while (attackAgain && currentDinosaur.dinosaurEnergy>0 && currentRobot.robotPowerLevel>0);
+            dinosaur.dinosaurEnergy += energyIncrement;
+            robot.robotPowerLevel += energyIncrement;
+            Console.WriteLine();
         }
 
         public void RobotAttacksDinosaur(Robot robot, Dinosaur dinosaur)
@@ -318,12 +322,13 @@ namespace robotsVsDinosaurs
                         attackAgain = true;
                         break;
                     default:
-                        robot.robotPowerLevel += energyIncrement;
-                        dinosaur.dinosaurEnergy += energyIncrement;
                         attackAgain = false;
                         break;
                 }
             } while (attackAgain && currentRobot.robotPowerLevel>0 && currentDinosaur.dinosaurEnergy>0);
+            robot.robotPowerLevel += energyIncrement;
+            dinosaur.dinosaurEnergy += energyIncrement;
+            Console.WriteLine();
         }
         public void PrintRobotStats(int index, Robot robot)
         {
@@ -372,11 +377,12 @@ namespace robotsVsDinosaurs
                 return false;
             }
         }
-        public void DinosaurNap(Dinosaur dinosaur)
+        public bool DinosaurNap(Dinosaur dinosaur)
         {
             Console.WriteLine("If you would like to allow " + dinosaur.dinosaurName + " to recharge through napping, press N or ENTER. To instead continue into an attack, press any other key.");
             Console.WriteLine("A nap will increase " + dinosaur.dinosaurName + "'s energy by 10 with a total energy cap of 30");
             ConsoleKeyInfo decision = Console.ReadKey();
+            Console.WriteLine();
             if (decision.Key == ConsoleKey.N || decision.Key == ConsoleKey.Enter)
             {
                 if (dinosaur.dinosaurEnergy < 20)
@@ -389,13 +395,19 @@ namespace robotsVsDinosaurs
                 }
                 Console.WriteLine(dinosaur.dinosaurName + " has taken a nap. New stats:");
                 PrintDinosaurStats(0, dinosaur);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
-        public void RobotRecharge(Robot robot)
+        public bool RobotRecharge(Robot robot)
         {
             Console.WriteLine("If you would like to allow " + robot.robotName + " to recharge through plugging in, press P or ENTER. To instead continue into an attack, press any other key.");
-            Console.WriteLine("A nap will increase " + robot.robotName + "'s energy by 10 with a full battery capacity being 30");
+            Console.WriteLine("A recharge will increase " + robot.robotName + "'s energy by 10 with a full battery capacity being 30");
             ConsoleKeyInfo decision = Console.ReadKey();
+            Console.WriteLine();
             if (decision.Key == ConsoleKey.P || decision.Key == ConsoleKey.Enter)
             {
                 if (robot.robotPowerLevel < 20)
@@ -408,6 +420,11 @@ namespace robotsVsDinosaurs
                 }
                 Console.WriteLine(robot.robotName + " recharged. New stats:");
                 PrintRobotStats(0, robot);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
