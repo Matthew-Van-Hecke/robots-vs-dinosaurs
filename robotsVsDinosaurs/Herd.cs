@@ -15,9 +15,9 @@ namespace robotsVsDinosaurs
 
         public Herd()
         {
-            fred = new Dinosaur("Fred", 100, 30, 5);
-            george = new Dinosaur("George", 100, 30, 5);
-            ron = new Dinosaur("Ron", 100, 30, 25);
+            fred = new Dinosaur("Fred", 100, 300, 5);
+            george = new Dinosaur("George", 100, 300, 5);
+            ron = new Dinosaur("Ron", 90, 300, 8);
             dinosaurList = new List<Dinosaur>();
         }
 

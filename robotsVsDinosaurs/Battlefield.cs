@@ -20,7 +20,7 @@ namespace robotsVsDinosaurs
         bool dinosaursTurn = false;
         bool dinosaurDead;
         bool robotDead;
-        int energyIncrement = 1;
+        int energyIncrement = 10;
         int healthIncrement = 5;
         int energyCapacity = 30;
         int diceRollMaxValue = 13;
@@ -34,8 +34,6 @@ namespace robotsVsDinosaurs
             dinosaurs = herd.GenerateDinosaurList();
             robots = fleet.GenerateRobotList();
             currentAttacker = "";
-            bool dinosaurDead = false;
-            bool robotDead = false;
         }
 
         //Member Methods (Can do)
@@ -131,12 +129,8 @@ namespace robotsVsDinosaurs
                         PrintDinosaurStats(i, dinosaurs[i]);
                     }
                 }
-            
-            PrintDivider();
-            Console.WriteLine("Hit any key to continue.");
-            Console.ReadKey();
-            Console.WriteLine();
-            PrintDivider();
+
+            PressKeyToContinue();
         }
         public void PickRobot()
         {
@@ -174,21 +168,15 @@ namespace robotsVsDinosaurs
                     PrintRobotStats(i, robots[i]);
                 }
             }
-            
-            PrintDivider();
-            Console.WriteLine("Hit any key to continue.");
-            Console.ReadKey();
-            Console.WriteLine();
-            PrintDivider();
+
+            PressKeyToContinue();
         }
         public void DinosaurAttacksRobot(Dinosaur dinosaur, Robot robot)
         {
             //Prompt user to pick an attack type.
             currentDinosaur.SelectAttackType(currentDinosaur.dinosaurName);
             PrintDinosaurStats(dinosaurs.IndexOf(currentDinosaur), currentDinosaur);
-            Console.WriteLine("Hit any key to continue.");
-            Console.ReadKey();
-            Console.WriteLine();
+            PressKeyToContinue();
             bool attackAgain = false;
             do
             {
@@ -214,7 +202,7 @@ namespace robotsVsDinosaurs
                     Console.WriteLine("Robot " + robot.robotName + " wins the battle!");
                 }
                 dinosaur.dinosaurEnergy -= energyIncrement;
-                robot.robotPowerLevel -= energyIncrement;
+                robot.robotPowerLevel -= energyIncrement / 2;
 
                 Console.WriteLine($"{dinosaur.dinosaurName} has {dinosaur.dinosaurHealth} health and {dinosaur.dinosaurEnergy} energy remaining");
                 Console.WriteLine($"{robot.robotName} has {robot.robotHealth} health and {robot.robotPowerLevel} power remaining");
@@ -233,7 +221,7 @@ namespace robotsVsDinosaurs
                     break;
                 }
                 //Ask user if dinosaur wants to attack again.
-                Console.WriteLine($"To have {dinosaur.dinosaurName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain 2 energy.");
+                Console.WriteLine($"To have {dinosaur.dinosaurName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain {energyIncrement} energy.");
                 ConsoleKeyInfo keyInput = Console.ReadKey();
                 Console.WriteLine();
                 switch (keyInput.Key)
@@ -257,9 +245,7 @@ namespace robotsVsDinosaurs
             //Prompt user to pick up a weapon to upgrade their attack power since they aren't being caught by surprise
             currentRobot.GetNewWeapon(currentRobot.robotName);
             PrintRobotStats(robots.IndexOf(currentRobot), currentRobot);
-            Console.WriteLine("Hit any key to continue.");
-            Console.ReadKey();
-            Console.WriteLine();
+            PressKeyToContinue();
             bool attackAgain = false;
             do
             {
@@ -285,7 +271,7 @@ namespace robotsVsDinosaurs
                     Console.WriteLine("Dinosaur " + dinosaur.dinosaurName + " wins the battle!");
                 }
                 robot.robotPowerLevel -= energyIncrement;
-                dinosaur.dinosaurEnergy -= energyIncrement;
+                dinosaur.dinosaurEnergy -= energyIncrement/2;
 
                 //Check if both contestants are still alive. If not, remove the one with zero health from the game, end the attack, and prompt the user to pick from the remaining robots and dinosaurs.
                 robotDead = IsRobotDead(currentRobot);
@@ -306,7 +292,7 @@ namespace robotsVsDinosaurs
                 Console.WriteLine($"{dinosaur.dinosaurName} has {dinosaur.dinosaurHealth} health and {dinosaur.dinosaurEnergy} energy remaining");
                 Console.WriteLine($"{robot.robotName} has {robot.robotHealth} health and {robot.robotPowerLevel} power remaining");
                 //Ask user if robot wants to attack again.
-                Console.WriteLine($"To have {robot.robotName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain 2 energy.");
+                Console.WriteLine($"To have {robot.robotName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain {energyIncrement} energy.");
                 ConsoleKeyInfo keyInput = Console.ReadKey();
                 switch (keyInput.Key)
                 {
@@ -379,9 +365,9 @@ namespace robotsVsDinosaurs
             Console.WriteLine();
             if (decision.Key == ConsoleKey.N || decision.Key == ConsoleKey.Enter)
             {
-                if (dinosaur.dinosaurEnergy < 20)
+                if (dinosaur.dinosaurEnergy < 200)
                 {
-                    dinosaur.dinosaurEnergy += 10;
+                    dinosaur.dinosaurEnergy += 100;
                 }
                 else
                 {
@@ -404,9 +390,9 @@ namespace robotsVsDinosaurs
             Console.WriteLine();
             if (decision.Key == ConsoleKey.P || decision.Key == ConsoleKey.Enter)
             {
-                if (robot.robotPowerLevel < 20)
+                if (robot.robotPowerLevel < 200)
                 {
-                    robot.robotPowerLevel += 10;
+                    robot.robotPowerLevel += 100;
                 }
                 else
                 {
@@ -420,6 +406,13 @@ namespace robotsVsDinosaurs
             {
                 return false;
             }
+        }
+        public void PressKeyToContinue()
+        {
+            PrintDivider();
+            Console.WriteLine("Hit any key to continue.");
+            Console.ReadKey();
+            PrintDivider();
         }
     }
 }
