@@ -22,7 +22,7 @@ namespace robotsVsDinosaurs
         bool robotDead;
         int energyIncrement = 10;
         int healthIncrement = 5;
-        int energyCapacity = 30;
+        int energyCapacity = 300;
         int diceRollMaxValue = 13;
 
         //Constructor (Spawner)
@@ -69,7 +69,7 @@ namespace robotsVsDinosaurs
                     Console.WriteLine("Robot's Turn.");
                     PrintDivider();
                     PickRobot();
-                    if (currentRobot.robotPowerLevel < 30)
+                    if (currentRobot.robotPowerLevel < energyCapacity)
                     {
                         robotRecharged = RobotRecharge(currentRobot);
                     }
@@ -234,8 +234,9 @@ namespace robotsVsDinosaurs
                         break;
                 }
             } while (attackAgain && currentDinosaur.dinosaurEnergy>0 && currentRobot.robotPowerLevel>0);
-            dinosaur.dinosaurEnergy += energyIncrement;
-            robot.robotPowerLevel += energyIncrement;
+
+            IncrementDinosaurEnergy(currentDinosaur);
+            IncrementRobotPowerLevel(currentRobot);
             robot.weapon = robot.weapons[0];
             Console.WriteLine();
         }
@@ -304,8 +305,9 @@ namespace robotsVsDinosaurs
                         break;
                 }
             } while (attackAgain && currentRobot.robotPowerLevel>0 && currentDinosaur.dinosaurEnergy>0);
-            robot.robotPowerLevel += energyIncrement;
-            dinosaur.dinosaurEnergy += energyIncrement;
+            IncrementRobotPowerLevel(currentRobot);
+            IncrementDinosaurEnergy(currentDinosaur);
+
             robot.weapon = robot.weapons[0];
             Console.WriteLine();
         }
@@ -413,6 +415,28 @@ namespace robotsVsDinosaurs
             Console.WriteLine("Hit any key to continue.");
             Console.ReadKey();
             PrintDivider();
+        }
+        public void IncrementDinosaurEnergy(Dinosaur dinosaur)
+        {
+            if (dinosaur.dinosaurEnergy < energyCapacity - energyIncrement)
+            {
+                dinosaur.dinosaurEnergy += energyIncrement;
+            }
+            else if (dinosaur.dinosaurEnergy < energyCapacity)
+            {
+                dinosaur.dinosaurEnergy = energyCapacity;
+            }
+        }
+        public void IncrementRobotPowerLevel(Robot robot)
+        {
+            if (robot.robotPowerLevel < energyCapacity - energyIncrement)
+            {
+                robot.robotPowerLevel += energyIncrement;
+            }
+            else if (robot.robotPowerLevel < energyCapacity)
+            {
+                robot.robotPowerLevel = energyCapacity;
+            }
         }
     }
 }
