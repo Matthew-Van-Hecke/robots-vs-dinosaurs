@@ -29,23 +29,29 @@ namespace robotsVsDinosaurs
         //Member Methods (Can Do)
         public void GetNewWeapon ()
         {
-            Console.WriteLine("Give your dinosaur a weapon: (Options: Sword(s), Pistol(p), Light Saber(l)");
-            ConsoleKeyInfo newWeapon = Console.ReadKey();
-            Console.WriteLine();
-            switch (newWeapon.Key)
+            bool repeatLoop = false;
+            do
             {
-                case ConsoleKey.S:
-                    weapon = sword;
-                    break;
-                case ConsoleKey.P:
-                    weapon = pistol;
-                    break;
-                case ConsoleKey.L:
-                    weapon = lightSaber;
-                    break;
-                default:
-                    break;
-            }
+                repeatLoop = false;
+                Console.WriteLine("Give your robot a weapon: (Options: Sword(s), Pistol(p), Light Saber(l)");
+                ConsoleKeyInfo newWeapon = Console.ReadKey();
+                Console.WriteLine();
+                switch (newWeapon.Key)
+                {
+                    case ConsoleKey.S:
+                        weapon = sword;
+                        break;
+                    case ConsoleKey.P:
+                        weapon = pistol;
+                        break;
+                    case ConsoleKey.L:
+                        weapon = lightSaber;
+                        break;
+                    default:
+                        repeatLoop = true;
+                        break;
+                }
+            } while (repeatLoop == true);
         }
     }
 }
