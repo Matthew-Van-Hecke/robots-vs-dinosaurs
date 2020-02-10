@@ -123,8 +123,7 @@ namespace robotsVsDinosaurs
                         PrintDivider();
                         Console.WriteLine("Invalid response. Please type the number next to your choice, and hit enter.");
                     }
-                    
-                    Console.WriteLine();
+
                     PrintDivider();
                 } while (!validSelection);
                 for (int i = 0; i < dinosaurs.Count; i++)
@@ -139,7 +138,6 @@ namespace robotsVsDinosaurs
             
             PrintDivider();
             Console.WriteLine("Hit any key to continue.");
-            Console.ReadLine();
             PrintDivider();
         }
         public void PickRobot()
@@ -149,7 +147,6 @@ namespace robotsVsDinosaurs
             bool validSelection = true;
             Console.WriteLine("Please select your robot by typing the number next to it and hittting enter: ");
             //Using a do while loop, take in the user input, make sure it's a valid integer and a valid index of list of remaining robots. Set the robot they select as current robot.
-
             do
             {
                 for (int i = 0; i < robots.Count; i++)
@@ -199,6 +196,7 @@ namespace robotsVsDinosaurs
                 int defenseValue = defenderDiceRoll * robot.weapon.weaponAttackPower * robot.robotPowerLevel;
                 Console.WriteLine($"Dinosaur scores {attackValue}!");
                 Console.WriteLine($"Robot scores {defenseValue}!");
+                Console.WriteLine();
                 
                 //See whose fight value wins the battle. Tie goes to the defender. Loser loses 5 health points. Both lose 2 energy points.
                 if (attackValue > defenseValue)
@@ -241,6 +239,7 @@ namespace robotsVsDinosaurs
             } while (attackAgain && currentDinosaur.dinosaurEnergy>0 && currentRobot.robotPowerLevel>0);
             dinosaur.dinosaurEnergy += energyIncrement;
             robot.robotPowerLevel += energyIncrement;
+            robot.weapon = robot.weapons[0];
             Console.WriteLine();
         }
 
@@ -257,6 +256,7 @@ namespace robotsVsDinosaurs
                 int defenseValue = defenderDiceRoll * dinosaur.dinosaurAttackPower * dinosaur.dinosaurEnergy;
                 Console.WriteLine($"Robot scores {attackValue}!");
                 Console.WriteLine($"Dinosaur scores {defenseValue}!");
+                Console.WriteLine();
                 
                 //See whose fight value wins the battle. Tie goes to the defender. Loser loses 5 health points. Both lose 2 energy points.
                 if (attackValue > defenseValue)
@@ -305,6 +305,7 @@ namespace robotsVsDinosaurs
             } while (attackAgain && currentRobot.robotPowerLevel>0 && currentDinosaur.dinosaurEnergy>0);
             robot.robotPowerLevel += energyIncrement;
             dinosaur.dinosaurEnergy += energyIncrement;
+            robot.weapon = robot.weapons[0];
             Console.WriteLine();
         }
         public void PrintRobotStats(int index, Robot robot)
