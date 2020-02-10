@@ -12,10 +12,9 @@ namespace robotsVsDinosaurs
         public string robotName;
         public int robotHealth;
         public int robotPowerLevel;
+        public bool validSelection;
         public Weapon weapon;
-        public Weapon sword = new Weapon("Sword", 8);
-        public Weapon pistol = new Weapon("Pistol", 10);
-        public Weapon lightSaber = new Weapon("Light Saber", 20);
+        public List<Weapon> weapons = new List<Weapon> { new Weapon("Bare Hands", 5), new Weapon("Sword", 8), new Weapon("Pistol", 10), new Weapon("Light Saber", 20) };
 
         //Constructor (Spawner)
         public Robot(string name, int health, int powerLevel)
@@ -27,31 +26,39 @@ namespace robotsVsDinosaurs
         }
 
         //Member Methods (Can Do)
-        public void GetNewWeapon ()
+        public void GetNewWeapon (string name)
         {
-            bool repeatLoop = false;
+            bool isInteger;
             do
             {
-                repeatLoop = false;
-                Console.WriteLine("Give your robot a weapon: (Options: Sword(s), Pistol(p), Light Saber(l)");
-                ConsoleKeyInfo newWeapon = Console.ReadKey();
-                Console.WriteLine();
-                switch (newWeapon.Key)
+                Console.WriteLine("Please select a weapon for " + name + " by typing the number next to it and hitting enter.");
+                
+                for (int i = 0; i < weapons.Count; i++)
                 {
-                    case ConsoleKey.S:
-                        weapon = sword;
-                        break;
-                    case ConsoleKey.P:
-                        weapon = pistol;
-                        break;
-                    case ConsoleKey.L:
-                        weapon = lightSaber;
-                        break;
-                    default:
-                        repeatLoop = true;
-                        break;
+                    Console.WriteLine(i + " " + weapons[i].weaponType);
                 }
-            } while (repeatLoop == true);
+                string stringWeaponChoice = Console.ReadLine();
+                int intWeaponChoice;
+                isInteger = int.TryParse(stringWeaponChoice, out intWeaponChoice);
+                validSelection = isInteger && intWeaponChoice >= 0 && intWeaponChoice < weapons.Count;
+                if (!validSelection)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Invalid selection. Please try again.");
+                    continue;
+                }
+                else
+                {
+                    for (int i = 0; i<weapons.Count; i++ )
+                    {
+                        if (i == intWeaponChoice)
+                        {
+                            weapon = weapons[i];
+                            break;
+                        }
+                    }
+                }
+            } while (!validSelection);
         }
     }
 }

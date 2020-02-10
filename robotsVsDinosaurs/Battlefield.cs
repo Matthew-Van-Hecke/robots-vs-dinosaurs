@@ -19,6 +19,8 @@ namespace robotsVsDinosaurs
         string currentAttacker;
         bool dinosaurDead;
         bool robotDead;
+        int energyIncrement = 1;
+        int healthIncrement = 5;
         int diceRollMaxValue = 13;
 
         //Constructor (Spawner)
@@ -105,7 +107,7 @@ namespace robotsVsDinosaurs
             int intDinosaurChoice = 0;
             bool validSelection = true;
 
-            Console.WriteLine("Please select your dinosaur of typing the number next to it and hittting enter: ");
+            Console.WriteLine("Please select your dinosaur by typing the number next to it and hittting enter: ");
             
             //Using a do while loop, take in the user input, make sure it's a valid integer and a valid index of list of remaining dinosaurs. Set the dinosaur they select as current dinosaur.
 
@@ -148,7 +150,7 @@ namespace robotsVsDinosaurs
             string stringRobotChoice = "";
             int intRobotChoice = 0;
             bool validSelection = true;
-            Console.WriteLine("Please select your robot of typing the number next to it and hittting enter: ");
+            Console.WriteLine("Please select your robot by typing the number next to it and hittting enter: ");
             //Using a do while loop, take in the user input, make sure it's a valid integer and a valid index of list of remaining robots. Set the robot they select as current robot.
 
             do
@@ -180,7 +182,7 @@ namespace robotsVsDinosaurs
                     PrintRobotStats(i, robots[i]);
                 }
             }
-            currentRobot.GetNewWeapon();
+            currentRobot.GetNewWeapon(currentRobot.robotName);
             PrintRobotStats(robots.IndexOf(currentRobot), currentRobot);
             PrintDivider();
             Console.WriteLine("Hit any key to continue.");
@@ -204,16 +206,16 @@ namespace robotsVsDinosaurs
                 //See whose fight value wins the battle. Tie goes to the defender. Loser loses 5 health points. Both lose 2 energy points.
                 if (attackValue > defenseValue)
                 {
-                    robot.robotHealth -= 5;
+                    robot.robotHealth -= healthIncrement;
                     Console.WriteLine("Dinosaur " + dinosaur.dinosaurName + " wins the battle!");
                 }
                 else
                 {
-                    dinosaur.dinosaurHealth -= 5;
+                    dinosaur.dinosaurHealth -= healthIncrement;
                     Console.WriteLine("Robot " + robot.robotName + " wins the battle!");
                 }
-                dinosaur.dinosaurEnergy -= 2;
-                robot.robotPowerLevel -= 2;
+                dinosaur.dinosaurEnergy -= energyIncrement;
+                robot.robotPowerLevel -= energyIncrement;
 
                 Console.WriteLine($"{dinosaur.dinosaurName} has {dinosaur.dinosaurHealth} health and {dinosaur.dinosaurEnergy} energy remaining");
                 Console.WriteLine($"{robot.robotName} has {robot.robotHealth} health and {robot.robotPowerLevel} power remaining");
@@ -235,12 +237,12 @@ namespace robotsVsDinosaurs
                         attackAgain = true;
                         break;
                     default:
-                        dinosaur.dinosaurEnergy += 2;
-                        robot.robotPowerLevel += 2;
+                        dinosaur.dinosaurEnergy += energyIncrement;
+                        robot.robotPowerLevel += energyIncrement;
                         attackAgain = false;
                         break;
                 }
-            } while (attackAgain);
+            } while (attackAgain && currentDinosaur.dinosaurEnergy>0 && currentRobot.robotPowerLevel>0);
         }
 
         public void RobotAttacksDinosaur(Robot robot, Dinosaur dinosaur)
@@ -260,16 +262,16 @@ namespace robotsVsDinosaurs
                 //See whose fight value wins the battle. Tie goes to the defender. Loser loses 5 health points. Both lose 2 energy points.
                 if (attackValue > defenseValue)
                 {
-                    dinosaur.dinosaurHealth -= 5;
+                    dinosaur.dinosaurHealth -= healthIncrement;
                     Console.WriteLine("Robot " + robot.robotName + " wins the battle!");
                 }
                 else
                 {
-                    robot.robotHealth -= 5;
-                    Console.WriteLine("Diniosaur " + dinosaur.dinosaurName + " wins the battle!");
+                    robot.robotHealth -= healthIncrement;
+                    Console.WriteLine("Dinosaur " + dinosaur.dinosaurName + " wins the battle!");
                 }
-                robot.robotPowerLevel -= 2;
-                dinosaur.dinosaurEnergy -= 2;
+                robot.robotPowerLevel -= energyIncrement;
+                dinosaur.dinosaurEnergy -= energyIncrement;
 
                 //Check if both contestants are still alive. If not, remove the one with zero health from the game, end the attack, and prompt the user to pick from the remaining robots and dinosaurs.
                 robotDead = IsRobotDead(currentRobot);
@@ -278,6 +280,12 @@ namespace robotsVsDinosaurs
                 {
                     robotDead = false;
                     dinosaurDead = false;
+                    break;
+                }
+
+                if (currentDinosaur.dinosaurEnergy<=0 || currentRobot.robotPowerLevel<=0)
+                {
+                    Console.WriteLine("One of the contestants has become completely exhausted, and a break has been called for.");
                     break;
                 }
 
@@ -292,12 +300,12 @@ namespace robotsVsDinosaurs
                         attackAgain = true;
                         break;
                     default:
-                        robot.robotPowerLevel += 2;
-                        dinosaur.dinosaurEnergy += 2;
+                        robot.robotPowerLevel += energyIncrement;
+                        dinosaur.dinosaurEnergy += energyIncrement;
                         attackAgain = false;
                         break;
                 }
-            } while (attackAgain);
+            } while (attackAgain && currentRobot.robotPowerLevel>0 && currentDinosaur.dinosaurEnergy>0);
         }
         public void PrintRobotStats(int index, Robot robot)
         {
@@ -324,7 +332,7 @@ namespace robotsVsDinosaurs
         {
             if (dinosaur.dinosaurHealth <= 0)
             {
-                Console.WriteLine("Dinosaur " + dinosaur.dinosaurName + " died. Please pick another dinosaur to take up the fight.");
+                Console.WriteLine("Dinosaur " + dinosaur.dinosaurName + " died.");
                 dinosaurs.Remove(dinosaur);
                 return true;
             }
@@ -337,7 +345,7 @@ namespace robotsVsDinosaurs
         {
             if (robot.robotHealth <= 0)
             {
-                Console.WriteLine("Robot " + robot.robotName + " died. Please pick another robot to take up the fight.");
+                Console.WriteLine("Robot " + robot.robotName + " died.");
                 robots.Remove(robot);
                 return true;
             }
