@@ -17,6 +17,7 @@ namespace robotsVsDinosaurs
         Dinosaur currentDinosaur;
         Robot currentRobot;
         string currentAttacker;
+        bool dinosaursTurn = false;
         bool dinosaurDead;
         bool robotDead;
         int energyIncrement = 1;
@@ -48,11 +49,12 @@ namespace robotsVsDinosaurs
             {
                 dinosaurNapped = false;
                 robotRecharged = false;
-                PickAttacker();
                 PrintDivider();
 
-                if (currentAttacker == "dinosaur")
+                if (dinosaursTurn)
                 {
+                    Console.WriteLine("Dinosaur's turn.");
+                    PrintDivider();
                     PickDinosaur();
                     if (currentDinosaur.dinosaurEnergy < energyCapacity)
                     {
@@ -66,8 +68,10 @@ namespace robotsVsDinosaurs
                         PrintDivider();
                     }
                 }
-                else if (currentAttacker == "robot")
+                else if (!dinosaursTurn)
                 {
+                    Console.WriteLine("Robot's Turn.");
+                    PrintDivider();
                     PickRobot();
                     if (currentRobot.robotPowerLevel < 30)
                     {
@@ -81,6 +85,7 @@ namespace robotsVsDinosaurs
                         PrintDivider();
                     }
                 }
+                dinosaursTurn = !dinosaursTurn;
             }
             //When one of the lists becomes empty, other team wins.
             if (dinosaurs.Count>0)
@@ -93,34 +98,6 @@ namespace robotsVsDinosaurs
             }
         }
 
-        public void PickAttacker()
-        {
-            bool repeatLoop = false;
-            do
-            {
-                if (repeatLoop)
-                {
-                    Console.WriteLine("Invalid response. Please try again.");
-                }
-                repeatLoop = false;
-                Console.WriteLine("Who will attack? Robot(r) or Dinosaur(d)?");
-                ConsoleKeyInfo userChoice = Console.ReadKey();
-                Console.WriteLine();
-                switch (userChoice.Key)
-                {
-                    case (ConsoleKey.R):
-                        currentAttacker = "robot";
-                        break;
-                    case (ConsoleKey.D):
-                        currentAttacker = "dinosaur";
-                        break;
-                    default:
-                        repeatLoop = true;
-                        break;
-                }
-            } while (repeatLoop);
-            Console.WriteLine(currentAttacker);
-        }
         public void PickDinosaur()
         {
             string stringDinosaurChoice = "";
