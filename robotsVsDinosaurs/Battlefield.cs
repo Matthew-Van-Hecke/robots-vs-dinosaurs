@@ -204,8 +204,6 @@ namespace robotsVsDinosaurs
                 dinosaur.dinosaurEnergy -= energyIncrement;
                 robot.robotPowerLevel -= energyIncrement / 2;
 
-                Console.WriteLine($"{dinosaur.dinosaurName} has {dinosaur.dinosaurHealth} health and {dinosaur.dinosaurEnergy} energy remaining");
-                Console.WriteLine($"{robot.robotName} has {robot.robotHealth} health and {robot.robotPowerLevel} power remaining");
                 //Check if both contestants have health remaining. If either one does not, remove them from the game, and break out of attack loop.
                 robotDead = IsDinosaurDead(currentDinosaur);
                 dinosaurDead = IsRobotDead(currentRobot);
@@ -220,6 +218,9 @@ namespace robotsVsDinosaurs
                     Console.WriteLine("One of the contestants has become completely exhausted, and a break has been called for.");
                     break;
                 }
+
+                Console.WriteLine($"{dinosaur.dinosaurName} has {dinosaur.dinosaurHealth} health and {dinosaur.dinosaurEnergy} energy remaining");
+                Console.WriteLine($"{robot.robotName} has {robot.robotHealth} health and {robot.robotPowerLevel} power remaining");
                 //Ask user if dinosaur wants to attack again.
                 Console.WriteLine($"To have {dinosaur.dinosaurName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain {energyIncrement} energy.");
                 ConsoleKeyInfo keyInput = Console.ReadKey();
@@ -295,6 +296,7 @@ namespace robotsVsDinosaurs
                 //Ask user if robot wants to attack again.
                 Console.WriteLine($"To have {robot.robotName} attack again, press enter. To have him back down, hit any other key. A rest will cause both participants to regain {energyIncrement} energy.");
                 ConsoleKeyInfo keyInput = Console.ReadKey();
+                Console.WriteLine();
                 switch (keyInput.Key)
                 {
                     case ConsoleKey.Enter:
@@ -362,7 +364,7 @@ namespace robotsVsDinosaurs
         public bool DinosaurNap(Dinosaur dinosaur)
         {
             Console.WriteLine("If you would like to allow " + dinosaur.dinosaurName + " to recharge through napping, press N or ENTER. To instead continue into an attack, press any other key.");
-            Console.WriteLine("A nap will increase " + dinosaur.dinosaurName + "'s energy by 10 with a total energy cap of 30");
+            Console.WriteLine("A nap will increase " + dinosaur.dinosaurName + "'s energy by " + energyIncrement + " with a total energy cap of " + energyCapacity + ".");
             ConsoleKeyInfo decision = Console.ReadKey();
             Console.WriteLine();
             if (decision.Key == ConsoleKey.N || decision.Key == ConsoleKey.Enter)
@@ -387,7 +389,7 @@ namespace robotsVsDinosaurs
         public bool RobotRecharge(Robot robot)
         {
             Console.WriteLine("If you would like to allow " + robot.robotName + " to recharge through plugging in, press P or ENTER. To instead continue into an attack, press any other key.");
-            Console.WriteLine("A recharge will increase " + robot.robotName + "'s energy by 10 with a full battery capacity being 30");
+            Console.WriteLine("A recharge will increase " + robot.robotName + "'s energy by " + energyIncrement + " with a full battery capacity being " + energyCapacity + ".");
             ConsoleKeyInfo decision = Console.ReadKey();
             Console.WriteLine();
             if (decision.Key == ConsoleKey.P || decision.Key == ConsoleKey.Enter)

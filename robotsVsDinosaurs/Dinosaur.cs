@@ -46,7 +46,8 @@ namespace robotsVsDinosaurs
                 string stringAttackTypeChoice = Console.ReadLine();
                 int intAttackTypeChoice;
                 isInteger = int.TryParse(stringAttackTypeChoice, out intAttackTypeChoice);
-                validSelection = isInteger && intAttackTypeChoice >= 0 && intAttackTypeChoice < attackTypes.Count;
+                attackTypeCost = attackTypes[intAttackTypeChoice].attackTypeAttackPower * 3;
+                validSelection = isInteger && intAttackTypeChoice >= 0 && intAttackTypeChoice < attackTypes.Count && attackTypeCost <= dinosaurHealth;
                 if (!validSelection)
                 {
                     Console.WriteLine();
@@ -59,7 +60,6 @@ namespace robotsVsDinosaurs
                     {
                         if (i == intAttackTypeChoice)
                         {
-                            attackTypeCost = (attackTypes[i].attackTypeAttackPower) * 3;
                             dinosaurHealth -= attackTypeCost;
                             attackType = attackTypes[i];
                             break;

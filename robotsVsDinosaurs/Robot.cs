@@ -45,7 +45,8 @@ namespace robotsVsDinosaurs
                 string stringWeaponChoice = Console.ReadLine();
                 int intWeaponChoice;
                 isInteger = int.TryParse(stringWeaponChoice, out intWeaponChoice);
-                validSelection = isInteger && intWeaponChoice >= 0 && intWeaponChoice < weapons.Count;
+                weaponCost = (weapons[intWeaponChoice].weaponAttackPower - weapon.weaponAttackPower) * 3;
+                validSelection = isInteger && intWeaponChoice >= 0 && intWeaponChoice < weapons.Count && weaponCost<=robotHealth;
                 if (!validSelection)
                 {
                     Console.WriteLine();
@@ -58,7 +59,6 @@ namespace robotsVsDinosaurs
                     {
                         if (i == intWeaponChoice)
                         {
-                            weaponCost = (weapons[i].weaponAttackPower - weapon.weaponAttackPower) * 3;
                             robotHealth -= weaponCost;
                             weapon = weapons[i];
                             break;
