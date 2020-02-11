@@ -38,7 +38,10 @@ namespace robotsVsDinosaurs
                 for (int i = 0; i < attackTypes.Count; i++)
                 {
                     attackTypeCost = (attackTypes[i].attackTypeAttackPower) * 3;
-                    Console.WriteLine(i + " " + attackTypes[i].attackTypeName + "    Power: " + attackTypes[i].attackTypeAttackPower + "    Cost: " + attackTypeCost + " health.");
+                    if (attackTypeCost <= dinosaurHealth)
+                    {
+                        Console.WriteLine(i + " " + attackTypes[i].attackTypeName + "    Power: " + attackTypes[i].attackTypeAttackPower + "    Cost: " + attackTypeCost + " health.");
+                    }
                 }
                 string stringAttackTypeChoice = Console.ReadLine();
                 int intAttackTypeChoice;

@@ -414,6 +414,7 @@ namespace robotsVsDinosaurs
             PrintDivider();
             Console.WriteLine("Hit any key to continue.");
             Console.ReadKey();
+            Console.WriteLine();
             PrintDivider();
         }
         public void IncrementDinosaurEnergy(Dinosaur dinosaur)

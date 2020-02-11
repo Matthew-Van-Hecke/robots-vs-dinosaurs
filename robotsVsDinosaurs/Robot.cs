@@ -37,7 +37,10 @@ namespace robotsVsDinosaurs
                 for (int i = 0; i < weapons.Count; i++)
                 {
                     weaponCost = (weapons[i].weaponAttackPower - weapon.weaponAttackPower) * 3;
-                    Console.WriteLine(i + " " + weapons[i].weaponType + "    Power: " + weapons[i].weaponAttackPower + "    Cost: " + weaponCost + " health.");
+                    if (weaponCost <= robotHealth)
+                    {
+                        Console.WriteLine(i + " " + weapons[i].weaponType + "    Power: " + weapons[i].weaponAttackPower + "    Cost: " + weaponCost + " health.");
+                    }
                 }
                 string stringWeaponChoice = Console.ReadLine();
                 int intWeaponChoice;
