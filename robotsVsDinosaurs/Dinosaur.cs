@@ -6,24 +6,22 @@ using System.Threading.Tasks;
 
 namespace robotsVsDinosaurs
 {
-    class Dinosaur
+    class Dinosaur : Contestant
     {
         //Member Variables (Has a)
-        public string dinosaurName;
-        public int dinosaurHealth;
-        public int dinosaurEnergy;
-        public int dinosaurAttackPower;
+        public int attackPower;
         bool validSelection = false;
         public AttackType attackType;
-        public List<AttackType> attackTypes = new List<AttackType> { new AttackType("Basic Confrontation", 0), new AttackType("Attack From Behind", 3), new AttackType("Attack while sleeping", 5), new AttackType("Snake/Nija approach", 15)};
+        public List<AttackType> attackTypes;
 
         //Constructor (Spawner)
         public Dinosaur(string name, int health, int energy, int attackPower)
         {
-            dinosaurName = name;
-            dinosaurHealth = health;
-            dinosaurEnergy = energy;
-            dinosaurAttackPower = attackPower;
+            this.name = name;
+            this.health = health;
+            this.energy = energy;
+            this.attackPower = attackPower;
+            attackTypes = new List<AttackType> { new AttackType("Basic Confrontation", 0), new AttackType("Attack From Behind", 3), new AttackType("Attack while sleeping", 5), new AttackType("Snake/Nija approach", 15) };
             attackType = attackTypes[0];
         }
         //Member Methods (Can do)
@@ -38,7 +36,7 @@ namespace robotsVsDinosaurs
                 for (int i = 0; i < attackTypes.Count; i++)
                 {
                     attackTypeCost = (attackTypes[i].attackTypeAttackPower) * 3;
-                    if (attackTypeCost <= dinosaurHealth)
+                    if (attackTypeCost <= health)
                     {
                         Console.WriteLine(i + " " + attackTypes[i].attackTypeName + "    Power: " + attackTypes[i].attackTypeAttackPower + "    Cost: " + attackTypeCost + " health.");
                     }
@@ -47,7 +45,7 @@ namespace robotsVsDinosaurs
                 int intAttackTypeChoice;
                 isInteger = int.TryParse(stringAttackTypeChoice, out intAttackTypeChoice);
                 attackTypeCost = attackTypes[intAttackTypeChoice].attackTypeAttackPower * 3;
-                validSelection = isInteger && intAttackTypeChoice >= 0 && intAttackTypeChoice < attackTypes.Count && attackTypeCost <= dinosaurHealth;
+                validSelection = isInteger && intAttackTypeChoice >= 0 && intAttackTypeChoice < attackTypes.Count && attackTypeCost <= health;
                 if (!validSelection)
                 {
                     Console.WriteLine();
@@ -60,7 +58,7 @@ namespace robotsVsDinosaurs
                     {
                         if (i == intAttackTypeChoice)
                         {
-                            dinosaurHealth -= attackTypeCost;
+                            health -= attackTypeCost;
                             attackType = attackTypes[i];
                             break;
                         }

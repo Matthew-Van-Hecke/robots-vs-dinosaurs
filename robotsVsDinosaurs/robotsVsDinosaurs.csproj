@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AttackType.cs" />
     <Compile Include="Battlefield.cs" />
+    <Compile Include="Contestant.cs" />
     <Compile Include="Dinosaur.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="Herd.cs" />

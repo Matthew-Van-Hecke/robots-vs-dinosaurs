@@ -6,23 +6,21 @@ using System.Threading.Tasks;
 
 namespace robotsVsDinosaurs
 {
-    class Robot
+    class Robot : Contestant
     {
         //Member Variables (Has a)
-        public string robotName;
-        public int robotHealth;
-        public int robotPowerLevel;
         public bool validSelection;
         public Weapon weapon;
-        public List<Weapon> weapons = new List<Weapon> { new Weapon("Default - Bare Hands", 5), new Weapon("Sword", 8), new Weapon("Pistol", 10), new Weapon("Light Saber", 20) };
+        public List<Weapon> weapons;
 
         //Constructor (Spawner)
-        public Robot(string name, int health, int powerLevel)
+        public Robot(string name, int health, int energy)
         {
-            robotName = name;
-            robotHealth = health;
-            robotPowerLevel = powerLevel;
+            this.name = name;
+            this.health = health;
+            this.energy = energy;
             weapon = weapons[0];
+            weapons = new List<Weapon> { new Weapon("Default - Bare Hands", 5), new Weapon("Sword", 8), new Weapon("Pistol", 10), new Weapon("Light Saber", 20) };
         }
 
         //Member Methods (Can Do)
@@ -37,7 +35,7 @@ namespace robotsVsDinosaurs
                 for (int i = 0; i < weapons.Count; i++)
                 {
                     weaponCost = (weapons[i].weaponAttackPower - weapon.weaponAttackPower) * 3;
-                    if (weaponCost <= robotHealth)
+                    if (weaponCost <= health)
                     {
                         Console.WriteLine(i + " " + weapons[i].weaponType + "    Power: " + weapons[i].weaponAttackPower + "    Cost: " + weaponCost + " health.");
                     }
@@ -46,7 +44,7 @@ namespace robotsVsDinosaurs
                 int intWeaponChoice;
                 isInteger = int.TryParse(stringWeaponChoice, out intWeaponChoice);
                 weaponCost = (weapons[intWeaponChoice].weaponAttackPower - weapon.weaponAttackPower) * 3;
-                validSelection = isInteger && intWeaponChoice >= 0 && intWeaponChoice < weapons.Count && weaponCost<=robotHealth;
+                validSelection = isInteger && intWeaponChoice >= 0 && intWeaponChoice < weapons.Count && weaponCost<=health;
                 if (!validSelection)
                 {
                     Console.WriteLine();
@@ -59,7 +57,7 @@ namespace robotsVsDinosaurs
                     {
                         if (i == intWeaponChoice)
                         {
-                            robotHealth -= weaponCost;
+                            health -= weaponCost;
                             weapon = weapons[i];
                             break;
                         }
