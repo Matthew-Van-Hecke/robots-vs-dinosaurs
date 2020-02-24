@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace robotsVsDinosaurs
 {
-    class AttackType
+    class AttackType : Accessory
     {
         //Member Variables (Has a)
-        public string attackTypeName;
-        public int attackTypeAttackPower;
+        
         //Constructor (Spawner)
         public AttackType(string type, int attackPower)
         {
-            attackTypeName = type;
-            attackTypeAttackPower = attackPower;
+            this.type = type;
+            this.attackPower = attackPower;
         }
         //Member Methods (Can do)
 

@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace robotsVsDinosaurs
 {
-    class Contestant
+    class Accessory
     {
-        public string name;
-        public int health;
-        public int energy;
-
-        public 
+        public string type;
+        public int attackPower;
     }
 }
